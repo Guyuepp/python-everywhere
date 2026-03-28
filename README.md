@@ -1,5 +1,7 @@
 # Android Process Text + Local Python (Chaquopy)
 
+中文说明见 [README.zh-CN.md](README.zh-CN.md).
+
 An Android app that executes selected text as Python code via the system Process Text menu and shows structured results in a dialog-style overlay.
 
 ## What It Does
@@ -64,3 +66,8 @@ Suggested workaround:
 ## License
 
 No license file is provided yet. Add a `LICENSE` before open-source distribution if needed.
+
+## Acknowledgements
+
+This repository is maintained by the project author.
+Special thanks to GitHub Copilot (GPT-5.3-Codex), which contributed a large portion of the implementation, testing, and documentation scaffolding during development.
