@@ -24,6 +24,7 @@ English version: [README.md](README.md)
 ## 发布版本
 
 - Release 页面：https://github.com/Guyuepp/python-everywhere/releases
+- 变更记录：[CHANGELOG.md](CHANGELOG.md)
 
 ## 技术栈
 
@@ -73,5 +74,4 @@ cd android-text-python-app
 
 ## 致谢
 
-本仓库由我维护与整合。
 特别感谢 GitHub Copilot（GPT-5.3-Codex）在开发阶段贡献了大部分实现代码、测试脚手架与文档整理工作。

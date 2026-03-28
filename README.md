@@ -24,6 +24,7 @@ An Android app that executes selected text as Python code via the system Process
 ## Releases
 
 - Release page: https://github.com/Guyuepp/python-everywhere/releases
+- Changelog: [CHANGELOG.md](CHANGELOG.md)
 
 ## Tech Stack
 
@@ -73,5 +74,4 @@ This project is licensed under the MIT License. See `LICENSE` for details.
 
 ## Acknowledgements
 
-This repository is maintained by the project author.
 Special thanks to GitHub Copilot (GPT-5.3-Codex), which contributed a large portion of the implementation, testing, and documentation scaffolding during development.
