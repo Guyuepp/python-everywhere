@@ -12,6 +12,10 @@ English version: [README.md](README.md)
 - 支持展开查看：`stdout`、`stderr`、`traceback`。
 - 支持一键复制标准化结果 JSON。
 
+## 致谢
+
+特别感谢 GitHub Copilot（GPT-5.3-Codex）在开发阶段贡献了大部分实现代码、测试脚手架与文档整理工作。
+
 ## 项目结构
 
 - `android-text-python-app/`：Android 应用工程。
@@ -71,7 +75,3 @@ cd android-text-python-app
 ## 许可证
 
 本项目使用 MIT License，详情见 `LICENSE`。
-
-## 致谢
-
-特别感谢 GitHub Copilot（GPT-5.3-Codex）在开发阶段贡献了大部分实现代码、测试脚手架与文档整理工作。

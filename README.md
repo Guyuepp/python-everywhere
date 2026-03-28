@@ -12,6 +12,10 @@ An Android app that executes selected text as Python code via the system Process
 - Supports expandable details: `stdout`, `stderr`, `traceback`.
 - Copies normalized result JSON to clipboard.
 
+## Acknowledgements
+
+Special thanks to GitHub Copilot (GPT-5.3-Codex), which contributed a large portion of the implementation, testing, and documentation scaffolding during development.
+
 ## Project Structure
 
 - `android-text-python-app/`: Android application project.
@@ -71,7 +75,3 @@ Suggested workaround:
 ## License
 
 This project is licensed under the MIT License. See `LICENSE` for details.
-
-## Acknowledgements
-
-Special thanks to GitHub Copilot (GPT-5.3-Codex), which contributed a large portion of the implementation, testing, and documentation scaffolding during development.
