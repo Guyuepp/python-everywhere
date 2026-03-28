@@ -21,6 +21,10 @@ English version: [README.md](README.md)
   - `docs/m8/m8-3-release-checklist.md`：发布检查单。
   - `docs/m8/m8-4-mvp-acceptance-review.md`：MVP 验收评审。
 
+## 发布版本
+
+- Release 页面：https://github.com/Guyuepp/python-everywhere/releases
+
 ## 技术栈
 
 - Android（Kotlin + View）
@@ -65,7 +69,7 @@ cd android-text-python-app
 
 ## 许可证
 
-当前仓库尚未提供许可证文件。若要开源分发，建议补充 `LICENSE`。
+本项目使用 MIT License，详情见 `LICENSE`。
 
 ## 致谢
 

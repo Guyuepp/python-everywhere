@@ -21,6 +21,10 @@ An Android app that executes selected text as Python code via the system Process
   - `docs/m8/m8-3-release-checklist.md`: release checklist.
   - `docs/m8/m8-4-mvp-acceptance-review.md`: MVP acceptance review.
 
+## Releases
+
+- Release page: https://github.com/Guyuepp/python-everywhere/releases
+
 ## Tech Stack
 
 - Android (Kotlin, Views)
@@ -65,7 +69,7 @@ Suggested workaround:
 
 ## License
 
-No license file is provided yet. Add a `LICENSE` before open-source distribution if needed.
+This project is licensed under the MIT License. See `LICENSE` for details.
 
 ## Acknowledgements
 
