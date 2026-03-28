@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Python Spike</string>
+    <string name="process_text_action_label">Run as Python</string>
+    <string name="result_title">Python Execution Result</string>
+    <string name="result_copy_json">Copy Result JSON</string>
+    <string name="result_close">Done</string>
+    <string name="result_status_running">Running</string>
+    <string name="result_status_success">Success</string>
+    <string name="result_status_failure">Error</string>
+    <string name="result_duration_running">Elapsed: --</string>
+    <string name="result_duration_format">Elapsed: %1$d ms</string>
+    <string name="result_message_running">Executing selected text as Python code...</string>
+    <string name="result_stdout_title">stdout</string>
+    <string name="result_stderr_title">stderr</string>
+    <string name="result_traceback_title">traceback</string>
+    <string name="result_stdout_title_collapsed">stdout ▼</string>
+    <string name="result_stderr_title_collapsed">stderr ▼</string>
+    <string name="result_traceback_title_collapsed">traceback ▼</string>
+    <string name="result_copy_success">Result JSON copied</string>
+    <string name="result_copy_failure">Copy failed</string>
+    <string name="result_copy_empty">No result JSON available yet</string>
 </resources>

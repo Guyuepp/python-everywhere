@@ -23,9 +23,15 @@ M0-1 要求冻结 Android + Python 构建链版本，避免 AGP/Kotlin/Chaquopy 
 ## 约束与边界
 
 1. `minSdk` 固定为 `26`（满足计划要求，且高于 Chaquopy 最低 `24`）。
-2. 不启用动态版本号、版本范围、`+` 号依赖。
+2. 不启用动态版本号、版本范围、`+` 号依赖，禁止 `latest`。
 3. 仅允许在后续 ADR 更新后升级版本矩阵。
 4. AGP 9 项目不应用 `org.jetbrains.kotlin.android` 插件，避免与 built-in Kotlin 冲突。
+
+## 锁定位置
+
+1. AGP/Chaquopy: `android-text-python-app/build.gradle.kts`
+2. Gradle Wrapper: `android-text-python-app/gradle/wrapper/gradle-wrapper.properties`
+3. Python 版本: `android-text-python-app/app/build.gradle.kts`
 
 ## 影响
 
@@ -34,7 +40,13 @@ M0-1 要求冻结 Android + Python 构建链版本，避免 AGP/Kotlin/Chaquopy 
 
 ## 验证记录
 
-M0-2 Spike 使用上述版本组合创建，执行 Gradle 任务用于验证构建链可解析。
+M0-2 Spike 使用上述版本组合创建，执行以下命令验证构建链可解析：
+
+```bash
+cd android-text-python-app
+./gradlew :app:assembleDebug
+./gradlew :app:testDebugUnitTest
+```
 
 ## 参考
 
