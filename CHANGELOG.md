@@ -2,6 +2,18 @@
 
 All notable changes to this project are documented in this file.
 
+## Unreleased
+
+### Added
+- Launcher now opens a dedicated execution history screen.
+- Execution history persistence for Process Text runs, capped to the latest 100 records.
+- History interactions: refresh, clear-all (with confirmation), and per-item detail dialog.
+- Instrumentation coverage for launcher and Process Text intent routing.
+
+### Changed
+- Split app entry routing: `HistoryActivity` handles `MAIN/LAUNCHER`, `MainActivity` handles `PROCESS_TEXT` only.
+- Updated user and developer docs for history-first launcher behavior.
+
 ## v0.1.1 - 2026-03-28
 
 ### Changed
