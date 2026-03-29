@@ -20,4 +20,24 @@
     <string name="result_copy_success">Result JSON copied</string>
     <string name="result_copy_failure">Copy failed</string>
     <string name="result_copy_empty">No result JSON available yet</string>
+
+    <string name="history_title">Execution History</string>
+    <string name="history_refresh">Refresh</string>
+    <string name="history_clear">Clear</string>
+    <string name="history_empty">No history yet. Run from Process Text to create records.</string>
+    <string name="history_load_failed">Failed to load history</string>
+    <string name="history_clear_title">Clear history</string>
+    <string name="history_clear_message">This will permanently remove all history records.</string>
+    <string name="history_clear_confirm">Clear All</string>
+    <string name="history_clear_done">History cleared</string>
+    <string name="history_item_title_format">%1$s  |  %2$s</string>
+    <string name="history_item_meta_format">Elapsed: %1$d ms  |  ErrorCode: %2$s</string>
+    <string name="history_item_no_input">(no input preview)</string>
+    <string name="history_detail_title">History: %1$s</string>
+    <string name="history_detail_time">Time: %1$s</string>
+    <string name="history_detail_status">Status: %1$s (errorCode=%2$s)</string>
+    <string name="history_detail_duration">Elapsed: %1$d ms</string>
+    <string name="history_detail_source">Source: %1$s</string>
+    <string name="history_detail_input">Input preview:</string>
+    <string name="history_detail_message">Message:</string>
 </resources>

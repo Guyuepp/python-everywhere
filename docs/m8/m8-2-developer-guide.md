@@ -25,7 +25,9 @@
 android-text-python-app/
   app/
     src/main/java/com/example/pythonspike/
+      HistoryActivity.kt
       MainActivity.kt
+      ExecutionHistoryRepository.kt
       PythonRunner.kt
       PythonBridge.kt
       ProcessTextIntentReader.kt
@@ -39,44 +41,53 @@ android-text-python-app/
       InputValidatorTest.kt
       ProcessTextIntentReaderTest.kt
     src/androidTest/java/com/example/pythonspike/
+      LauncherEntryRoutingTest.kt
       MainActivityProcessTextTest.kt
 ```
 
 ## 3. 核心模块说明
 
 1. MainActivity
-- 职责: Process Text 入口、输入解析、状态渲染、复制 JSON。
+- 职责: Process Text 入口、输入解析、状态渲染、复制 JSON、结果写入历史。
 - 关键点: `onNewIntent` 新请求覆盖旧请求；Elapsed 显示端到端执行耗时。
 
-2. ProcessTextIntentReader
+2. HistoryActivity
+- 职责: 启动器默认入口，展示最近执行历史。
+- 关键点: 仅展示历史，不触发 Python 执行；支持刷新、清空与详情查看。
+
+3. ProcessTextIntentReader
 - 职责: 安全读取 Intent 输入，处理读取异常并映射错误码。
 - 关键点: 对大事务失败映射 `INTENT_TOO_LARGE`。
 
-3. InputValidator
+4. InputValidator
 - 职责: 输入边界校验（空白、超长、异常字符）。
 - 关键点: 拒绝非法输入并返回 `INVALID_INPUT`。
 
-4. PythonRunner
+5. PythonRunner
 - 职责: 协程调度、超时控制、并发闸门、取消语义。
 - 关键点:
   - 单并发执行。
   - 超时策略为“放弃等待 + 状态回传”。
   - 不做线程硬终止。
 
-5. PythonBridge (ChaquopyPythonBridge)
+6. PythonBridge (ChaquopyPythonBridge)
 - 职责: Kotlin 与 Python 的桥接调用。
 - 关键点: 调用 `processor.process_text`，并提供 cancel/clear 接口。
 
-6. processor.py
+7. processor.py
 - 职责: 执行 Python 代码、捕获 stdout/stderr、统一结构返回。
 - 关键点:
   - 输入按 Python 代码执行。
   - 非法代码进入 error 路径。
   - 输出结构与 Kotlin 侧协议一致。
 
-7. ResultPayload / PythonResultPayload
+8. ResultPayload / PythonResultPayload
 - 职责: 结果模型统一与 JSON 序列化。
 - 关键点: 任意状态都可得到合法 JSON。
+
+9. ExecutionHistoryRepository
+- 职责: 历史持久化与读取（SharedPreferences）。
+- 关键点: 仅记录 Process Text 来源，按时间倒序保留最近 100 条。
 
 ## 4. 常用命令
 
@@ -156,6 +167,13 @@ adb logcat -d | grep -E "PythonSpike|AndroidRuntime" | tail -n 200
 
 2. 仪器测试:
 - `MainActivityProcessTextTest`（Process Text 拉起、onNewIntent 覆盖、复制 JSON）
+- `LauncherEntryRoutingTest`（启动器入口指向 HistoryActivity、Process Text 入口指向 MainActivity）
+
+## 8.5 启动器与入口路由
+
+1. MAIN/LAUNCHER 由 `HistoryActivity` 处理。
+2. `MainActivity` 仅处理 `android.intent.action.PROCESS_TEXT`。
+3. 若非 Process Text action 误入 `MainActivity`，会直接 finish 防止错误执行。
 
 ## 8. 已知限制（开发视角）
 
@@ -189,4 +207,5 @@ adb logcat -d | grep -E "PythonSpike|AndroidRuntime" | tail -n 200
 ./gradlew :app:assembleDebug
 ./gradlew :app:testDebugUnitTest
 ./gradlew :app:assembleDebugAndroidTest
+./gradlew :app:connectedDebugAndroidTest
 ```

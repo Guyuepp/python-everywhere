@@ -8,17 +8,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PythonSpike">
         <activity
-            android:name=".MainActivity"
+            android:name=".HistoryActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/Theme.PythonSpike.ResultOverlay"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
 
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.PythonSpike.ResultOverlay"
+            android:exported="true">
             <intent-filter android:label="@string/process_text_action_label">
                 <action android:name="android.intent.action.PROCESS_TEXT" />
 

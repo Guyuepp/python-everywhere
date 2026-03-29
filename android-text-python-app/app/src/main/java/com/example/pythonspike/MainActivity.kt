@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.json.JSONObject
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private var activeJob: Job? = null
     private var activeRequest: PythonRequestHandle? = null
     private var lastResultJson: String? = null
+    private var activeInputPreview: String = ""
 
     private data class ParsedExecutionInput(
         val input: String,
@@ -83,18 +85,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startExecutionFromIntent(srcIntent: Intent?, source: String) {
+        if (srcIntent?.action != Intent.ACTION_PROCESS_TEXT) {
+            AppLog.w("MainActivity", "ignore unsupported action=${srcIntent?.action ?: "none"}")
+            finish()
+            return
+        }
+
+        val intent = srcIntent
         activeJob?.cancel(CancellationException("replaced_by_new_intent"))
         cancelActiveRequest("replace_$source")
+        activeInputPreview = ""
 
-        val parsed = parseExecutionInput(srcIntent, source) ?: return
+        val parsed = parseExecutionInput(intent, source) ?: return
         val request = pythonRunner.createRequest()
         activeRequest = request
+        activeInputPreview = toHistoryInputPreview(parsed.input)
         renderRunningState()
         val startedAtNs = System.nanoTime()
 
         AppLog.d(
             "MainActivity",
-            "execute source=$source action=${srcIntent?.action ?: "none"} requestId=${request.requestId} " +
+            "execute source=$source action=${intent.action} requestId=${request.requestId} " +
                 "inputLength=${parsed.input.length}"
         )
 
@@ -144,6 +155,8 @@ class MainActivity : AppCompatActivity() {
             },
             isIntentTooLargeError = ::isIntentTooLargeError
         )
+
+        activeInputPreview = toHistoryInputPreview(readOutcome.input)
 
         if (readOutcome.errorCode != null) {
             AppLog.w(
@@ -224,6 +237,7 @@ class MainActivity : AppCompatActivity() {
     private fun renderPayload(payload: PythonResultPayload, durationMs: Long) {
         val resultPayload = ResultPayload.fromExecution(payload, durationMs)
         lastResultJson = resultPayload.toJsonString()
+        persistExecutionHistory(resultPayload, activeInputPreview)
 
         val renderedText = if (payload.isSuccess) {
             payload.resultText ?: "python_ok"
@@ -326,6 +340,33 @@ class MainActivity : AppCompatActivity() {
         header.visibility = View.GONE
         container.visibility = View.GONE
         contentView.text = ""
+    }
+
+    private fun persistExecutionHistory(payload: ResultPayload, inputPreview: String) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            runCatching {
+                ExecutionHistoryRepository.append(
+                    context = applicationContext,
+                    payload = payload,
+                    inputPreview = inputPreview,
+                    source = "PROCESS_TEXT"
+                )
+            }.onFailure {
+                AppLog.w("MainActivity", "persist history failed", it)
+            }
+        }
+    }
+
+    private fun toHistoryInputPreview(input: String): String {
+        if (input.isBlank()) {
+            return ""
+        }
+
+        return input
+            .replace("\n", " ")
+            .replace("\r", " ")
+            .trim()
+            .take(200)
     }
 
     private fun isIntentTooLargeError(error: Throwable): Boolean {
