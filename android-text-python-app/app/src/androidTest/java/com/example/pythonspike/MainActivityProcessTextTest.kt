@@ -12,6 +12,7 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import org.json.JSONObject
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -78,6 +79,38 @@ class MainActivityProcessTextTest {
         }
     }
 
+    @Test
+    fun processTextLaunch_persistsHistoryRecord() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        ExecutionHistoryRepository.clearAll(context)
+
+        val launchIntent = Intent(Intent.ACTION_PROCESS_TEXT).apply {
+            setClassName(context, MainActivity::class.java.name)
+            putExtra(Intent.EXTRA_PROCESS_TEXT, "'history-flow'")
+        }
+
+        val scenario = ActivityScenario.launch<MainActivity>(launchIntent)
+        try {
+            waitUntil(scenario) { activity ->
+                activity.findViewById<TextView>(R.id.statusText).text.toString() == "Success"
+            }
+
+            val historyItem = waitUntilHistoryRecord(
+                context = context,
+                timeoutMs = 10_000L
+            ) { item ->
+                item.inputPreview.contains("history-flow")
+            }
+
+            assertNotNull("Expected a history record for Process Text execution", historyItem)
+            assertEquals("PROCESS_TEXT", historyItem?.source)
+            assertEquals("success", historyItem?.status)
+            assertTrue((historyItem?.durationMs ?: 0L) >= 0L)
+        } finally {
+            closeScenarioSafely(scenario)
+        }
+    }
+
     private fun closeScenarioSafely(scenario: ActivityScenario<MainActivity>) {
         runCatching {
             scenario.onActivity { activity ->
@@ -108,5 +141,23 @@ class MainActivityProcessTextTest {
             Thread.sleep(100)
         }
         throw AssertionError("Timed out waiting for UI condition")
+    }
+
+    private fun waitUntilHistoryRecord(
+        context: Context,
+        timeoutMs: Long,
+        predicate: (ExecutionHistoryItem) -> Boolean
+    ): ExecutionHistoryItem? {
+        val deadline = System.currentTimeMillis() + timeoutMs
+        while (System.currentTimeMillis() < deadline) {
+            val match = ExecutionHistoryRepository
+                .listRecent(context, limit = 100)
+                .firstOrNull(predicate)
+            if (match != null) {
+                return match
+            }
+            Thread.sleep(100)
+        }
+        return null
     }
 }
