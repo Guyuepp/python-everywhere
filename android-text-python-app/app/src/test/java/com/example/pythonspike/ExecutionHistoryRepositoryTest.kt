@@ -15,6 +15,7 @@ class ExecutionHistoryRepositoryTest {
                 errorCode = null,
                 message = "ok",
                 inputPreview = "input-$index",
+                resultPreview = "result-$index",
                 durationMs = index,
                 source = "PROCESS_TEXT"
             )
@@ -37,6 +38,7 @@ class ExecutionHistoryRepositoryTest {
                 errorCode = "PYTHON_RUNTIME_ERROR",
                 message = "boom",
                 inputPreview = "1/0",
+                resultPreview = "",
                 durationMs = 30L,
                 source = "PROCESS_TEXT"
             ),
@@ -47,6 +49,7 @@ class ExecutionHistoryRepositoryTest {
                 errorCode = null,
                 message = "ok",
                 inputPreview = "1+2",
+                resultPreview = "3",
                 durationMs = 10L,
                 source = "PROCESS_TEXT"
             )
@@ -59,5 +62,6 @@ class ExecutionHistoryRepositoryTest {
         assertEquals(original[0], decoded[0])
         assertEquals(original[1], decoded[1])
         assertNull(decoded[1].errorCode)
+        assertEquals("3", decoded[1].resultPreview)
     }
 }

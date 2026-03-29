@@ -93,6 +93,9 @@ class HistoryActivity : AppCompatActivity() {
             appendLine(getString(R.string.history_detail_input))
             appendLine(if (item.inputPreview.isBlank()) "-" else item.inputPreview)
             appendLine("")
+            appendLine(getString(R.string.history_detail_result))
+            appendLine(if (item.resultPreview.isBlank()) "-" else item.resultPreview)
+            appendLine("")
             appendLine(getString(R.string.history_detail_message))
             append(if (item.message.isBlank()) "-" else item.message)
         }
@@ -137,11 +140,17 @@ class HistoryActivity : AppCompatActivity() {
                 item.durationMs,
                 item.errorCode ?: "-"
             )
-            detailText.text = if (item.inputPreview.isBlank()) {
+            val inputText = if (item.inputPreview.isBlank()) {
                 context.getString(R.string.history_item_no_input)
             } else {
                 item.inputPreview
             }
+            val resultText = if (item.resultPreview.isBlank()) {
+                context.getString(R.string.history_item_no_result)
+            } else {
+                item.resultPreview
+            }
+            detailText.text = context.getString(R.string.history_item_detail_format, inputText, resultText)
 
             val statusColor = when (item.status) {
                 "success" -> 0xFF0E7A0D.toInt()

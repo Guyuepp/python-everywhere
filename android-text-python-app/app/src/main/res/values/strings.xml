@@ -33,11 +33,15 @@
     <string name="history_item_title_format">%1$s  |  %2$s</string>
     <string name="history_item_meta_format">Elapsed: %1$d ms  |  ErrorCode: %2$s</string>
     <string name="history_item_no_input">(no input preview)</string>
+    <string name="history_item_no_result">(no result preview)</string>
+    <string name="history_item_detail_format">in: %1$s
+out: %2$s</string>
     <string name="history_detail_title">History: %1$s</string>
     <string name="history_detail_time">Time: %1$s</string>
     <string name="history_detail_status">Status: %1$s (errorCode=%2$s)</string>
     <string name="history_detail_duration">Elapsed: %1$d ms</string>
     <string name="history_detail_source">Source: %1$s</string>
     <string name="history_detail_input">Input preview:</string>
+    <string name="history_detail_result">Result preview:</string>
     <string name="history_detail_message">Message:</string>
 </resources>

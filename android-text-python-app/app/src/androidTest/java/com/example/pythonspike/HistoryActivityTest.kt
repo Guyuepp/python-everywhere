@@ -60,6 +60,7 @@ class HistoryActivityTest {
         try {
             onView(withText(containsString("SUCCESS"))).check(matches(isDisplayed()))
             onView(withText(containsString("history-input"))).check(matches(isDisplayed()))
+            onView(withText(containsString("out: 7"))).check(matches(isDisplayed()))
         } finally {
             scenario.close()
         }

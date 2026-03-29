@@ -105,6 +105,7 @@ class MainActivityProcessTextTest {
             assertNotNull("Expected a history record for Process Text execution", historyItem)
             assertEquals("PROCESS_TEXT", historyItem?.source)
             assertEquals("success", historyItem?.status)
+            assertTrue((historyItem?.resultPreview ?: "").contains("history-flow"))
             assertTrue((historyItem?.durationMs ?: 0L) >= 0L)
         } finally {
             closeScenarioSafely(scenario)

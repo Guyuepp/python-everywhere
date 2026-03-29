@@ -11,6 +11,7 @@ data class ExecutionHistoryItem(
     val errorCode: String?,
     val message: String,
     val inputPreview: String,
+    val resultPreview: String,
     val durationMs: Long,
     val source: String
 ) {
@@ -22,6 +23,7 @@ data class ExecutionHistoryItem(
             put("errorCode", errorCode ?: JSONObject.NULL)
             put("message", message)
             put("inputPreview", inputPreview)
+            put("resultPreview", resultPreview)
             put("durationMs", durationMs)
             put("source", source)
         }
@@ -36,6 +38,7 @@ data class ExecutionHistoryItem(
                 errorCode = json.optNullableString("errorCode"),
                 message = json.optString("message", ""),
                 inputPreview = json.optString("inputPreview", ""),
+                resultPreview = json.optString("resultPreview", ""),
                 durationMs = json.optLong("durationMs", 0L).coerceAtLeast(0L),
                 source = json.optString("source", "PROCESS_TEXT").ifBlank { "PROCESS_TEXT" }
             )
@@ -81,7 +84,8 @@ object ExecutionHistoryRepository {
                     status = payload.status,
                     errorCode = payload.errorCode,
                     message = payload.message,
-                    inputPreview = inputPreview,
+                    inputPreview = normalizePreview(inputPreview),
+                    resultPreview = toResultPreview(payload.result),
                     durationMs = payload.durationMs,
                     source = source
                 )
@@ -141,5 +145,26 @@ object ExecutionHistoryRepository {
         }.getOrElse {
             emptyList()
         }
+    }
+
+    private fun toResultPreview(result: Map<String, Any?>?): String {
+        if (result.isNullOrEmpty()) {
+            return ""
+        }
+
+        val rawValue = result["text"] ?: result.values.firstOrNull { it != null }
+        return normalizePreview(rawValue?.toString().orEmpty())
+    }
+
+    private fun normalizePreview(value: String): String {
+        if (value.isBlank()) {
+            return ""
+        }
+
+        return value
+            .replace("\n", " ")
+            .replace("\r", " ")
+            .trim()
+            .take(200)
     }
 }
