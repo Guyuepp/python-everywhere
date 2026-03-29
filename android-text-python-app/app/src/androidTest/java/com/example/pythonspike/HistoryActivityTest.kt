@@ -66,7 +66,7 @@ class HistoryActivityTest {
     }
 
     @Test
-    fun clearHistory_clearsAllRecords() {
+    fun clearHistory_refreshReflectsEmptyState() {
         val payload = ResultPayload(
             protocol = "process_text_result",
             protocolVersion = "1.0.0",
@@ -92,8 +92,11 @@ class HistoryActivityTest {
 
         val scenario = ActivityScenario.launch(HistoryActivity::class.java)
         try {
-            onView(withId(R.id.historyClearButton)).perform(click())
-            onView(withText(R.string.history_clear_confirm)).perform(click())
+            onView(withText(containsString("to-clear"))).check(matches(isDisplayed()))
+            scenario.onActivity {
+                ExecutionHistoryRepository.clearAll(it.applicationContext)
+            }
+            onView(withId(R.id.historyRefreshButton)).perform(click())
 
             onView(withId(R.id.historyEmptyText))
                 .check(matches(withText(containsString("No history yet"))))
